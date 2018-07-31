@@ -24,7 +24,7 @@ class CoverageVisualization extends Component {
   }
 
   createCoverageVisual() {
-    const svg = d3.select("svg"),
+    const svg = d3.select(this.node),
       width = +svg.attr("width"),
       height = +svg.attr("height"),
       drag = d3.drag();
@@ -44,21 +44,6 @@ class CoverageVisualization extends Component {
         )
       };
     });
-
-    var points = svg
-      .selectAll(null)
-      .data(points)
-      .enter()
-      .append("circle")
-      .attr("class", "point")
-      .attr("cx", function(d) {
-        return d.x;
-      })
-      .attr("cy", function(d) {
-        return d.y;
-      })
-      .attr("r", this.state.radius)
-      .style("fill", "red");
 
     const circle = svg
       .append("circle")
@@ -80,6 +65,28 @@ class CoverageVisualization extends Component {
           .on("drag", this.dragged)
           .on("end", this.dragended)
       );
+
+    var points = svg
+      .selectAll(null)
+      .data(points)
+      .enter()
+      .append("circle")
+      .attr("class", "point")
+      .attr("cx", function(d) {
+        return d.x;
+      })
+      .attr("cy", function(d) {
+        return d.y;
+      })
+      .attr("r", this.state.radius)
+      .style("fill", p => {
+        let x = circleDatum.x - p.x;
+        let y = circleDatum.y - p.y;
+        let dis = Math.hypot(x, y);
+        return dis <= Math.abs(this.state.unitRadius - this.state.radius)
+          ? "green"
+          : "red";
+      });
   }
 
   dragstarted(d) {
@@ -110,7 +117,13 @@ class CoverageVisualization extends Component {
   }
 
   render() {
-    return <svg ref={node => (this.node = node)} width={500} height={500} />;
+    return (
+      <svg
+        ref={node => (this.node = node)}
+        width={window.innerWidth}
+        height={window.innerHeight}
+      />
+    );
   }
 }
 
