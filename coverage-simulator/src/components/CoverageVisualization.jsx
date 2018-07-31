@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-// import { select, event, behavior } from "d3-selection";
-// import { drag } from "d3-drag";
 import * as d3 from "d3";
 import { PropTypes } from "prop-types";
 
@@ -11,7 +9,13 @@ class CoverageVisualization extends Component {
     this.dragstarted = this.dragstarted.bind(this);
     this.dragged = this.dragged.bind(this);
     this.dragended = this.dragended.bind(this);
+
+    this.state = {
+      radius: 8,
+      unitRadius: 64
+    };
   }
+
   componentDidMount() {
     this.createCoverageVisual();
   }
@@ -20,25 +24,43 @@ class CoverageVisualization extends Component {
   }
 
   createCoverageVisual() {
-    var svg = d3.select("svg"),
+    const svg = d3.select("svg"),
       width = +svg.attr("width"),
       height = +svg.attr("height"),
-      radius = 8,
-      unitRadius = 64,
       drag = d3.drag();
 
-    // var recieverDrag = d3.behavior
-    //   .drag()
-    //   .on("dragstart", this.dragstart)
-    //   .on("dragended", this.dragended);
-
-    console.log(drag);
     const circleDatum = {
       x: width / 2,
       y: height / 2
     };
 
-    var circle = svg
+    var points = d3.range(10).map(() => {
+      return {
+        x: Math.round(
+          Math.random() * (width - this.state.radius * 2) + this.state.radius
+        ),
+        y: Math.round(
+          Math.random() * (height - this.state.radius * 2) + this.state.radius
+        )
+      };
+    });
+
+    var points = svg
+      .selectAll(null)
+      .data(points)
+      .enter()
+      .append("circle")
+      .attr("class", "point")
+      .attr("cx", function(d) {
+        return d.x;
+      })
+      .attr("cy", function(d) {
+        return d.y;
+      })
+      .attr("r", this.state.radius)
+      .style("fill", "red");
+
+    const circle = svg
       .append("circle")
       .datum(circleDatum)
       .attr("class", "overlay")
@@ -49,7 +71,7 @@ class CoverageVisualization extends Component {
       .attr("cy", function(d) {
         return d.y;
       })
-      .attr("r", unitRadius)
+      .attr("r", this.state.unitRadius)
       .style("fill", "rgba(68, 137, 244, 0.4)")
       .style("cursor", "pointer")
       .call(
@@ -61,15 +83,26 @@ class CoverageVisualization extends Component {
   }
 
   dragstarted(d) {
-    d3.select("#reciever")
+    d3
+      .select("#reciever")
       .raise()
       .classed("active", true);
   }
 
   dragged(d) {
-    d3.select("#reciever")
+    d3
+      .select("#reciever")
       .attr("cx", (d.x = d3.event.x))
       .attr("cy", (d.y = d3.event.y));
+
+    d3.selectAll(".point").style("fill", p => {
+      let x = d.x - p.x;
+      let y = d.y - p.y;
+      let dis = Math.hypot(x, y);
+      return dis <= Math.abs(this.state.unitRadius - this.state.radius)
+        ? "green"
+        : "red";
+    });
   }
 
   dragended(d) {
