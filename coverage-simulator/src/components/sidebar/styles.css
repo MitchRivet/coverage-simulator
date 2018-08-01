@@ -5,6 +5,11 @@
     color: white;
 }
 
+.flexColumn {
+    composes: column from '../../styles/layout.css';
+    padding: 16px;
+}
+
 .flexRowLeftAlign {
     composes: row from '../../styles/layout.css';
     margin-right: auto; 
@@ -27,4 +32,8 @@
     background: black; 
     border-color: black; 
     color: rgba(68, 137, 244);
+}
+
+.sideBarSubTitle {
+    color: #afafaf;
 }

@@ -32,7 +32,6 @@ class RadioButtons extends Component {
     });
     return (
       <div className={styles.radioButtonColumn}>
-        <div className={styles.radioTitle}>{this.props.title}</div>
         {inputs}
       </div>
     );
