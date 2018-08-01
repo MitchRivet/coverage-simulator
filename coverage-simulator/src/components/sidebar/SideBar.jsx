@@ -2,16 +2,15 @@ import React, { Component } from "react";
 import styles from "./styles.css";
 import Button from "../button/Button";
 import RadioButtons from "../radiobuttons/RadioButtons";
-import DropDownContainer from "../../containers/DropDownContainer"
+import DropDownContainer from "../../containers/DropDownContainer";
 
 class SideBar extends Component {
   render() {
     return (
       <div className={styles.sideBar}>
-
         <div className={styles.flexColumn}>
           <div className={styles.sideBarSubTitle}>TX Power</div>
-            <DropDownContainer />
+          <DropDownContainer />
         </div>
 
         <div className={styles.flexColumn}>
@@ -23,12 +22,11 @@ class SideBar extends Component {
             ]}
           />
         </div>
-            <hr />
+        <hr className={styles.lineBreak}/>
         <div className={styles.flexRowRightAlign}>
           <Button title={"Save"} customStyle={styles.blueButton} />
           <Button title={"Cancel"} customStyle={styles.blackButton} />
         </div>
-
       </div>
     );
   }

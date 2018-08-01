@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import * as d3 from "d3";
 import { PropTypes } from "prop-types";
+import styles from './styles.css'
 
 class CoverageVisualization extends Component {
   constructor(props) {
@@ -11,8 +12,8 @@ class CoverageVisualization extends Component {
     this.dragended = this.dragended.bind(this);
 
     this.state = {
-      radius: 8,
-      unitRadius: 64
+      radius: 2,
+      unitRadius: 32
     };
   }
 
@@ -25,8 +26,8 @@ class CoverageVisualization extends Component {
 
   createCoverageVisual() {
     const svg = d3.select(this.node),
-      width = +svg.attr("width"),
-      height = +svg.attr("height"),
+      width = window.innerWidth - 400,
+      height = window.innerHeight - 10,
       drag = d3.drag();
 
     const circleDatum = {
@@ -117,12 +118,16 @@ class CoverageVisualization extends Component {
   }
 
   render() {
+    let viewBox = "0 0 " + (window.innerWidth - 400) + " " + window.innerHeight;
     return (
+      <div className={styles.svgContainer}>
       <svg
         ref={node => (this.node = node)}
-        width={window.innerWidth}
-        height={window.innerHeight}
+        preserveAspectRatio="xMinYMin meet"
+        viewBox={viewBox} 
+        className={styles.svgContent}
       />
+      </div>
     );
   }
 }
