@@ -1,0 +1,16 @@
+.radioButtonColumn {
+    composes: column from '../../styles/layout.css';
+}
+
+.radioSpacing {
+    margin: 8px 10px 10px 0px;
+}
+
+.centerLabel {
+    display: flex;
+    align-items: center;
+}
+
+.radioTitle {
+    color: #afafaf;
+}

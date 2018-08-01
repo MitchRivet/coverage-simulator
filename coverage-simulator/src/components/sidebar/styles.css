@@ -1,0 +1,30 @@
+.sideBar {
+    composes: column from '../../styles/layout.css';
+    width: 400px;
+    background: black; 
+    color: white;
+}
+
+.flexRowLeftAlign {
+    composes: row from '../../styles/layout.css';
+    margin-right: auto; 
+    padding: 16px;
+}
+
+.flexRowRightAlign {
+    composes: row from '../../styles/layout.css';
+    margin-left: auto; 
+    padding: 16px;
+}
+
+.blueButton {
+    background: rgba(68, 137, 244);
+    color: white;
+    border-color: rgba(68, 137, 244);
+}
+
+.blackButton {
+    background: black; 
+    border-color: black; 
+    color: rgba(68, 137, 244);
+}
