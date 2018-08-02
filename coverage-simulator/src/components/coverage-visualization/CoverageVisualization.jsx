@@ -3,6 +3,9 @@ import * as d3 from "d3";
 import { PropTypes } from "prop-types";
 import styles from "./styles.css";
 
+// Speed of Light in m/sec
+const sol = 299792458;
+
 class CoverageVisualization extends Component {
   constructor(props) {
     super(props);
@@ -10,6 +13,8 @@ class CoverageVisualization extends Component {
     this.dragstarted = this.dragstarted.bind(this);
     this.dragged = this.dragged.bind(this);
     this.dragended = this.dragended.bind(this);
+    this.freeSpacePathLoss = this.freeSpacePathLoss.bind(this);
+    this.ghzToHz = this.ghzToHz.bind(this);
 
     this.state = {
       radius: 2,
@@ -19,6 +24,23 @@ class CoverageVisualization extends Component {
 
   componentDidMount() {
     this.createCoverageVisual();
+  }
+
+  ghzToHz(ghz) {
+    return ghz * Math.pow(10, 9);
+  }
+
+  freeSpacePathLoss(distance) {
+    //formula: https://www.radio-electronics.com/info/propagation/path-loss/free-space-formula-equation.php
+    //distance in meters
+    return Math.pow(
+      4 *
+        Math.PI *
+        distance *
+        this.ghzToHz(this.props.currenConfig.radioFreq.num) /
+        sol,
+      2
+    );
   }
 
   createCoverageVisual() {
