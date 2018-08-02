@@ -17,8 +17,10 @@ class CoverageVisualization extends Component {
     this.ghzToHz = this.ghzToHz.bind(this);
 
     this.state = {
-      radius: 2,
-      unitRadius: 32
+      radius: 4,
+      unitRadius: 80,
+      vizWidth: window.innerWidth - 350,
+      vizHeight: window.innerHeight
     };
   }
 
@@ -30,9 +32,9 @@ class CoverageVisualization extends Component {
     return ghz * Math.pow(10, 9);
   }
 
+  //distance in meters
   freeSpacePathLoss(distance) {
     //formula: https://www.radio-electronics.com/info/propagation/path-loss/free-space-formula-equation.php
-    //distance in meters
     return Math.pow(
       4 *
         Math.PI *
@@ -45,22 +47,22 @@ class CoverageVisualization extends Component {
 
   createCoverageVisual() {
     const svg = d3.select(this.node),
-      width = window.innerWidth - 400,
-      height = window.innerHeight - 10,
       drag = d3.drag();
 
     const circleDatum = {
-      x: width / 2,
-      y: height / 2
+      x: this.state.vizWidth / 2,
+      y: this.state.vizHeight / 2
     };
 
     var points = d3.range(10).map(() => {
       return {
         x: Math.round(
-          Math.random() * (width - this.state.radius * 2) + this.state.radius
+          Math.random() * (this.state.vizWidth - this.state.radius * 2) +
+            this.state.radius
         ),
         y: Math.round(
-          Math.random() * (height - this.state.radius * 2) + this.state.radius
+          Math.random() * (this.state.vizHeight - this.state.radius * 2) +
+            this.state.radius
         )
       };
     });
@@ -107,6 +109,33 @@ class CoverageVisualization extends Component {
           ? "green"
           : "red";
       });
+
+    var legend = svg
+      .append("line")
+      .attr("x1", this.state.vizWidth - 10)
+      .attr("y1", this.state.vizHeight - 50)
+      .attr("x2", this.state.vizWidth - 110)
+      .attr("y2", this.state.vizHeight - 50)
+      .attr("stroke-width", 1)
+      .attr("stroke", "grey");
+
+    var legendVertLine1 = svg
+      .append("line")
+      .attr("x1", this.state.vizWidth - 10)
+      .attr("y1", this.state.vizHeight - 50)
+      .attr("x2", this.state.vizWidth - 10)
+      .attr("y2", this.state.vizHeight - 70)
+      .attr("stroke-width", 1)
+      .attr("stroke", "grey");
+
+      var legendVertLine2 = svg
+      .append("line")
+      .attr("x1", this.state.vizWidth - 110)
+      .attr("y1", this.state.vizHeight - 50)
+      .attr("x2", this.state.vizWidth - 110)
+      .attr("y2", this.state.vizHeight - 70)
+      .attr("stroke-width", 1)
+      .attr("stroke", "grey");  
   }
 
   dragstarted(d) {
@@ -137,12 +166,16 @@ class CoverageVisualization extends Component {
   }
 
   render() {
-    let viewBox = "0 0 " + (window.innerWidth - 400) + " " + window.innerHeight;
+    let preserveAspectRatio = "xMinYMin meet";
+    let viewBox = "0 0 " + this.state.vizWidth + " " + this.state.vizHeight;
     return (
-      <div className={styles.svgContainer}>
+      <div
+        className={styles.svgContainer}
+        style={{ height: this.state.vizHeight }}
+      >
         <svg
           ref={node => (this.node = node)}
-          preserveAspectRatio="xMinYMin meet"
+          preserveAspectRatio={preserveAspectRatio}
           viewBox={viewBox}
           className={styles.svgContent}
         />

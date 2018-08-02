@@ -1,0 +1,4 @@
+.ubiquitiBlackBackground {
+    background: #202830; /* For browsers that do not support gradients */
+    background: linear-gradient(#202830, #000000);
+}

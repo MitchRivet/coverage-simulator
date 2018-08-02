@@ -8,9 +8,11 @@ const customStyles = {
   }),
   control: styles => ({
     ...styles,
-    backgroundColor: "transparent"
+    backgroundColor: "transparent",
+    borderColor: "#8c8e9b",
+    borderRadius: "2px"
   }),
-
+  indicatorSeparator: styles => ({ ...styles, width: "0px" }),
   singleValue: styles => ({
     ...styles,
     color: "white"

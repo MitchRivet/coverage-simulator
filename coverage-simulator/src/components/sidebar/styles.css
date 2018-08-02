@@ -1,13 +1,13 @@
 .sideBar {
     composes: column from '../../styles/layout.css';
-    width: 400px;
-    background: black; 
+    composes: ubiquitiBlackBackground from '../../styles/colors.css';
+    width: 350px;
     color: white;
 }
 
 .flexColumn {
     composes: column from '../../styles/layout.css';
-    padding: 16px;
+    margin: 18px 16px 0px 12px;
 }
 
 .flexRowLeftAlign {
@@ -19,25 +19,27 @@
 .flexRowRightAlign {
     composes: row from '../../styles/layout.css';
     margin-left: auto; 
-    padding: 16px;
+    margin-right: 20px;
 }
 
 .blueButton {
-    background: rgba(68, 137, 244);
+    background: #16a0e0;
     color: white;
-    border-color: rgba(68, 137, 244);
+    border-color: #1c5371;
 }
 
-.blackButton {
-    background: black; 
-    border-color: black; 
-    color: rgba(68, 137, 244);
+.buttonNoBackground {
+    background: transparent; 
+    border: none;
+    color: #16a0e0;
 }
 
 .sideBarSubTitle {
-    color: #afafaf;
+    color: #8c8e9b;
+    font-size: 16px;
 }
 
 .lineBreak {
     width: 90%;
+    margin-top: 18px;
 }

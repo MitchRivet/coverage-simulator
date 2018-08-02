@@ -6,7 +6,7 @@ import SideBarContainer from "./containers/SideBarContainer";
 class App extends Component {
   render() {
     return (
-      <div className={layout.row}>
+      <div className={layout.rowSpaceBetween}>
         <CoverageVisualizationContainer />
         <SideBarContainer />
       </div>

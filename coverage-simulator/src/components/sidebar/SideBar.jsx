@@ -27,7 +27,7 @@ class SideBar extends Component {
           <Button
             action={this.props.cancel}
             title={"Cancel"}
-            customStyle={styles.blackButton}
+            customStyle={styles.buttonNoBackground}
           />
         </div>
       </div>
