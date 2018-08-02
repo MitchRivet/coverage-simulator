@@ -1,8 +1,7 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import layout from  './styles/layout.css';
-import CoverageVisualizationContainer from './containers/CoverageVisualizationContainer'
-import SideBarContainer from './containers/SideBarContainer'
+import React, { Component } from "react";
+import layout from "./styles/layout.css";
+import CoverageVisualizationContainer from "./containers/CoverageVisualizationContainer";
+import SideBarContainer from "./containers/SideBarContainer";
 
 class App extends Component {
   render() {

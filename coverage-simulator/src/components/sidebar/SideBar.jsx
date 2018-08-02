@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import styles from "./styles.css";
 import Button from "../button/Button";
-import RadioButtons from "../radiobuttons/RadioButtons";
+import RadioButtonsContainer from "../../containers/RadioButtonsContainer";
 import DropDownContainer from "../../containers/DropDownContainer";
 
 class SideBar extends Component {
@@ -15,17 +15,20 @@ class SideBar extends Component {
 
         <div className={styles.flexColumn}>
           <div className={styles.sideBarSubTitle}>Radio</div>
-          <RadioButtons
-            inputs={[
-              { val: "2.4 GHz", unit: "GHz", num: 2.4 },
-              { val: "5 GHz", unit: "GHz", num: 5 }
-            ]}
-          />
+          <RadioButtonsContainer />
         </div>
-        <hr className={styles.lineBreak}/>
+        <hr className={styles.lineBreak} />
         <div className={styles.flexRowRightAlign}>
-          <Button title={"Save"} customStyle={styles.blueButton} />
-          <Button title={"Cancel"} customStyle={styles.blackButton} />
+          <Button
+            action={this.props.save}
+            title={"Save"}
+            customStyle={styles.blueButton}
+          />
+          <Button
+            action={this.props.cancel}
+            title={"Cancel"}
+            customStyle={styles.blackButton}
+          />
         </div>
       </div>
     );

@@ -1,29 +1,29 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import DropDown from "../components/dropdown/DropDown";
+import RadioButtons from "../components/radiobuttons/RadioButtons";
 import { editConfigUpdate } from "../actions/actionCreators";
 
-class DropDownContainer extends Component {
+class RadioButtonsContainer extends Component {
   constructor(props) {
     super(props);
-    this.changeTxPower = this.changeTxPower.bind(this);
+    this.changeRadioFreq = this.changeRadioFreq.bind(this);
   }
 
-  changeTxPower(newValue, action) {
+  changeRadioFreq(newFreq) {
     let updateEditConfig = Object.assign(
       {},
       { ...this.props.editConfig },
-      { txPower: newValue }
+      { radioFreq: newFreq }
     );
     this.props.editConfigUpdate(updateEditConfig);
   }
 
   render() {
     return (
-      <DropDown
-        options={this.props.txPowerOptions}
-        selected={this.props.editConfig.txPower}
-        handleChange={this.changeTxPower}
+      <RadioButtons
+        options={this.props.radioFreqOptions}
+        selected={this.props.editConfig.radioFreq}
+        handleChange={this.changeRadioFreq}
       />
     );
   }
@@ -32,7 +32,7 @@ class DropDownContainer extends Component {
 const mapStateToProps = state => {
   return {
     editConfig: state.editConfig,
-    txPowerOptions: state.txPowerOptions
+    radioFreqOptions: state.radioFreqOptions
   };
 };
 
@@ -40,4 +40,6 @@ const mapDispatchToProps = {
   editConfigUpdate
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(DropDownContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(
+  RadioButtonsContainer
+);

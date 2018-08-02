@@ -1,15 +1,18 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import CoverageVisualization from "../components/coverage-visualization/CoverageVisualization";
 import { PropTypes } from "prop-types";
 
 class CoverageVisualizationContainer extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
-    return <CoverageVisualization />;
+    return <CoverageVisualization config={this.props.currentConfig} />;
   }
 }
 
-export default CoverageVisualizationContainer;
+const mapStateToProps = state => {
+  return {
+    currentConfig: state.currentConfig
+  };
+};
+
+export default connect(mapStateToProps)(CoverageVisualizationContainer);

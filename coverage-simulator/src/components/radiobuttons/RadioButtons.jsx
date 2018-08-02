@@ -1,41 +1,25 @@
-import React, { Component } from "react";
+import React from "react";
 import styles from "./styles.css";
 
-class RadioButtons extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-    this.handleChange = this.handleChange.bind(this);
-  }
-
-  handleChange(e) {
-    this.setState({
-      selection: e.target.value
-    });
-    //dispatch redux change radioUpdate
-  }
-
-  render() {
-    let inputs = this.props.inputs.map(input => {
-      return (
-        <label className={styles.centerLabel}>
-          <input
-            className={styles.radioSpacing}
-            type="radio"
-            value={input.val}
-            checked={this.state.selection === input.val}
-            onChange={this.handleChange}
-          />
-          {input.val}
-        </label>
-      );
-    });
+const RadioButtons = props => {
+  let options = props.options.map((option, i) => {
     return (
-      <div className={styles.radioButtonColumn}>
-        {inputs}
-      </div>
+      <label className={styles.centerLabel} key={i}>
+        <input
+          className={styles.radioSpacing}
+          type="radio"
+          value={option.value}
+          checked={props.selected.value === option.value}
+          onChange={() => {
+            props.handleChange(option);
+          }}
+        />
+        {option.label}
+      </label>
     );
-  }
-}
+  });
+
+  return <div className={styles.radioButtonColumn}>{options}</div>;
+};
 
 export default RadioButtons;
