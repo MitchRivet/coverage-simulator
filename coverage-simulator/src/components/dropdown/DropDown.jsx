@@ -2,10 +2,15 @@ import React from "react";
 import Select from "react-select";
 
 const customStyles = {
+  container: styles => ({
+    ...styles,
+    paddingTop: "6px"
+  }),
   control: styles => ({
     ...styles,
     backgroundColor: "transparent"
   }),
+
   singleValue: styles => ({
     ...styles,
     color: "white"

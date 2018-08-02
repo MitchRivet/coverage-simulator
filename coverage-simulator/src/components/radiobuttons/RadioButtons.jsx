@@ -4,22 +4,31 @@ import styles from "./styles.css";
 const RadioButtons = props => {
   let options = props.options.map((option, i) => {
     return (
-      <label className={styles.centerLabel} key={i}>
+      <li className={styles.itemLayout} key={i}>
         <input
-          className={styles.radioSpacing}
+          className={styles.radioInput}
           type="radio"
           value={option.value}
           checked={props.selected.value === option.value}
-          onChange={() => {
+        />
+        <div
+          className={styles.check}
+          onClick={() => {
             props.handleChange(option);
           }}
-        />
-        {option.label}
-      </label>
+        >
+          <div class="inside" />
+        </div>
+        <label className={styles.centerLabel}>{option.label}</label>
+      </li>
     );
   });
 
-  return <div className={styles.radioButtonColumn}>{options}</div>;
+  return (
+    <div className={styles.radioButtonColumn}>
+      <ul className={styles.listSpace}>{options}</ul>
+    </div>
+  );
 };
 
 export default RadioButtons;
