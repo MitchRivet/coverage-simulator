@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import * as d3 from "d3";
 import { PropTypes } from "prop-types";
-import styles from './styles.css'
+import styles from "./styles.css";
 
 class CoverageVisualization extends Component {
   constructor(props) {
@@ -18,9 +18,6 @@ class CoverageVisualization extends Component {
   }
 
   componentDidMount() {
-    this.createCoverageVisual();
-  }
-  componentDidUpdate() {
     this.createCoverageVisual();
   }
 
@@ -121,12 +118,12 @@ class CoverageVisualization extends Component {
     let viewBox = "0 0 " + (window.innerWidth - 400) + " " + window.innerHeight;
     return (
       <div className={styles.svgContainer}>
-      <svg
-        ref={node => (this.node = node)}
-        preserveAspectRatio="xMinYMin meet"
-        viewBox={viewBox} 
-        className={styles.svgContent}
-      />
+        <svg
+          ref={node => (this.node = node)}
+          preserveAspectRatio="xMinYMin meet"
+          viewBox={viewBox}
+          className={styles.svgContent}
+        />
       </div>
     );
   }
