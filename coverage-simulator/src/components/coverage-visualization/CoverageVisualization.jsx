@@ -7,8 +7,17 @@ import styles from "./styles.css";
 const sol = 299792458;
 
 const util = {
-  speedOfLight: 299792458, //m/sec
-  ghzToHz: ghz => ghz * Math.pow(10, 9)
+  speedOfLight: 299792458, // m/sec
+  ghzToHz: ghz => ghz * Math.pow(10, 9),
+  freeSpacePathLoss: (distance, radioFreqGhz) =>
+    Math.pow(
+      4 *
+        Math.PI *
+        distance *
+        util.ghzToHz(radioFreqGhz) /
+        util.speedOfLight,
+      2
+    )
 };
 
 class CoverageVisualization extends Component {
@@ -31,19 +40,6 @@ class CoverageVisualization extends Component {
     this.createCoverageVisual();
   }
 
-  //distance in meters
-  freeSpacePathLoss(distance) {
-    //formula: https://www.radio-electronics.com/info/propagation/path-loss/free-space-formula-equation.php
-    return Math.pow(
-      4 *
-        Math.PI *
-        distance *
-        this.ghzToHz(this.props.currenConfig.radioFreq.num) /
-        sol,
-      2
-    );
-  }
-
   createCoverageVisual() {
     const svg = d3.select(this.node),
       drag = d3.drag();
@@ -56,11 +52,13 @@ class CoverageVisualization extends Component {
     var points = d3.range(10).map(() => {
       return {
         x: Math.round(
-          Math.random() * (this.state.vizWidth - this.state.recieverRadius * 2) +
+          Math.random() *
+            (this.state.vizWidth - this.state.recieverRadius * 2) +
             this.state.recieverRadius
         ),
         y: Math.round(
-          Math.random() * (this.state.vizHeight - this.state.recieverRadius * 2) +
+          Math.random() *
+            (this.state.vizHeight - this.state.recieverRadius * 2) +
             this.state.recieverRadius
         )
       };
@@ -104,7 +102,8 @@ class CoverageVisualization extends Component {
         let x = circleDatum.x - p.x;
         let y = circleDatum.y - p.y;
         let dis = Math.hypot(x, y);
-        return dis <= Math.abs(this.state.accessPointRadius - this.state.recieverRadius)
+        return dis <=
+          Math.abs(this.state.accessPointRadius - this.state.recieverRadius)
           ? "green"
           : "red";
       });
@@ -164,7 +163,9 @@ class CoverageVisualization extends Component {
       let x = d.x - p.x;
       let y = d.y - p.y;
       let dis = Math.hypot(x, y);
-      return dis <= Math.abs(this.state.accessPointRadius - this.state.recieverRadius)
+      
+      return dis <=
+        Math.abs(this.state.accessPointRadius - this.state.recieverRadius)
         ? "green"
         : "red";
     });
