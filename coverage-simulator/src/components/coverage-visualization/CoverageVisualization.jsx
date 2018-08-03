@@ -17,7 +17,7 @@ class CoverageVisualization extends Component {
     this.ghzToHz = this.ghzToHz.bind(this);
 
     this.state = {
-      radius: 4,
+      radius: 6,
       unitRadius: 80,
       vizWidth: window.innerWidth - 350,
       vizHeight: window.innerHeight
@@ -128,14 +128,24 @@ class CoverageVisualization extends Component {
       .attr("stroke-width", 1)
       .attr("stroke", "grey");
 
-      var legendVertLine2 = svg
+    var legendVertLine2 = svg
       .append("line")
       .attr("x1", this.state.vizWidth - 110)
       .attr("y1", this.state.vizHeight - 50)
       .attr("x2", this.state.vizWidth - 110)
       .attr("y2", this.state.vizHeight - 70)
       .attr("stroke-width", 1)
-      .attr("stroke", "grey");  
+      .attr("stroke", "grey");
+
+    var legendText = svg
+      .append("text")
+      .attr("x", this.state.vizWidth - 85)
+      .attr("y", this.state.vizHeight - 60)
+      .text(function(d) {
+        return "100m";
+      })
+      .attr("font-family", "sans-serif")
+      .attr("font-size", "20px");
   }
 
   dragstarted(d) {
@@ -166,12 +176,11 @@ class CoverageVisualization extends Component {
   }
 
   render() {
-    let preserveAspectRatio = "xMinYMin meet";
+    let preserveAspectRatio = "xMidYMid meet";
     let viewBox = "0 0 " + this.state.vizWidth + " " + this.state.vizHeight;
     return (
       <div
         className={styles.svgContainer}
-        style={{ height: this.state.vizHeight }}
       >
         <svg
           ref={node => (this.node = node)}

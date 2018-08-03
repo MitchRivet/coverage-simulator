@@ -9,6 +9,7 @@ const RadioButtons = props => {
           className={styles.radioInput}
           type="radio"
           value={option.value}
+          onChange={() => {}}
           checked={props.selected.value === option.value}
         />
         <div
@@ -17,7 +18,7 @@ const RadioButtons = props => {
             props.handleChange(option);
           }}
         >
-          <div class="inside" />
+          <div />
         </div>
         <label className={styles.centerLabel}>{option.label}</label>
       </li>
