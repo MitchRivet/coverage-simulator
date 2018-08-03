@@ -6,6 +6,11 @@ import styles from "./styles.css";
 // Speed of Light in m/sec
 const sol = 299792458;
 
+const util = {
+  speedOfLight: 299792458, //m/sec
+  ghzToHz: ghz => ghz * Math.pow(10, 9)
+};
+
 class CoverageVisualization extends Component {
   constructor(props) {
     super(props);
@@ -13,12 +18,10 @@ class CoverageVisualization extends Component {
     this.dragstarted = this.dragstarted.bind(this);
     this.dragged = this.dragged.bind(this);
     this.dragended = this.dragended.bind(this);
-    this.freeSpacePathLoss = this.freeSpacePathLoss.bind(this);
-    this.ghzToHz = this.ghzToHz.bind(this);
 
     this.state = {
-      radius: 6,
-      unitRadius: 80,
+      recieverRadius: 6,
+      accessPointRadius: 80,
       vizWidth: window.innerWidth - 350,
       vizHeight: window.innerHeight
     };
@@ -26,10 +29,6 @@ class CoverageVisualization extends Component {
 
   componentDidMount() {
     this.createCoverageVisual();
-  }
-
-  ghzToHz(ghz) {
-    return ghz * Math.pow(10, 9);
   }
 
   //distance in meters
@@ -57,12 +56,12 @@ class CoverageVisualization extends Component {
     var points = d3.range(10).map(() => {
       return {
         x: Math.round(
-          Math.random() * (this.state.vizWidth - this.state.radius * 2) +
-            this.state.radius
+          Math.random() * (this.state.vizWidth - this.state.recieverRadius * 2) +
+            this.state.recieverRadius
         ),
         y: Math.round(
-          Math.random() * (this.state.vizHeight - this.state.radius * 2) +
-            this.state.radius
+          Math.random() * (this.state.vizHeight - this.state.recieverRadius * 2) +
+            this.state.recieverRadius
         )
       };
     });
@@ -78,7 +77,7 @@ class CoverageVisualization extends Component {
       .attr("cy", function(d) {
         return d.y;
       })
-      .attr("r", this.state.unitRadius)
+      .attr("r", this.state.accessPointRadius)
       .style("fill", "rgba(68, 137, 244, 0.4)")
       .style("cursor", "pointer")
       .call(
@@ -100,12 +99,12 @@ class CoverageVisualization extends Component {
       .attr("cy", function(d) {
         return d.y;
       })
-      .attr("r", this.state.radius)
+      .attr("r", this.state.recieverRadius)
       .style("fill", p => {
         let x = circleDatum.x - p.x;
         let y = circleDatum.y - p.y;
         let dis = Math.hypot(x, y);
-        return dis <= Math.abs(this.state.unitRadius - this.state.radius)
+        return dis <= Math.abs(this.state.accessPointRadius - this.state.recieverRadius)
           ? "green"
           : "red";
       });
@@ -165,7 +164,7 @@ class CoverageVisualization extends Component {
       let x = d.x - p.x;
       let y = d.y - p.y;
       let dis = Math.hypot(x, y);
-      return dis <= Math.abs(this.state.unitRadius - this.state.radius)
+      return dis <= Math.abs(this.state.accessPointRadius - this.state.recieverRadius)
         ? "green"
         : "red";
     });
@@ -179,9 +178,7 @@ class CoverageVisualization extends Component {
     let preserveAspectRatio = "xMidYMid meet";
     let viewBox = "0 0 " + this.state.vizWidth + " " + this.state.vizHeight;
     return (
-      <div
-        className={styles.svgContainer}
-      >
+      <div className={styles.svgContainer}>
         <svg
           ref={node => (this.node = node)}
           preserveAspectRatio={preserveAspectRatio}
