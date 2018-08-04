@@ -207,6 +207,8 @@ class CoverageVisualization extends Component {
       <div className={styles.svgContainer}>
         <svg
           ref={node => (this.node = node)}
+          width={this.state.vizWidth}
+          height={this.state.vizHeight}
           preserveAspectRatio={preserveAspectRatio}
           viewBox={viewBox}
           className={styles.svgContent}
