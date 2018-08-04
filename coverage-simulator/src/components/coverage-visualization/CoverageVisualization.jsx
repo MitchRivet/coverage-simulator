@@ -11,13 +11,11 @@ const util = {
   ghzToHz: ghz => ghz * Math.pow(10, 9),
   freeSpacePathLoss: (distance, radioFreqGhz) =>
     Math.pow(
-      4 *
-        Math.PI *
-        distance *
-        util.ghzToHz(radioFreqGhz) /
-        util.speedOfLight,
+      4 * Math.PI * distance * util.ghzToHz(radioFreqGhz) / util.speedOfLight,
       2
-    )
+    ),
+  accessPointSize: 80,
+  accessPointRange: () => util.accessPointSize / 2 + 80
 };
 
 class CoverageVisualization extends Component {
@@ -30,7 +28,6 @@ class CoverageVisualization extends Component {
 
     this.state = {
       recieverRadius: 6,
-      accessPointRadius: 80,
       vizWidth: window.innerWidth - 350,
       vizHeight: window.innerHeight
     };
@@ -49,7 +46,12 @@ class CoverageVisualization extends Component {
       y: this.state.vizHeight / 2
     };
 
-    var points = d3.range(10).map(() => {
+    const imageDatum = {
+      x: circleDatum.x - util.accessPointSize / 2,
+      y: circleDatum.y - util.accessPointSize / 2
+    };
+
+    const pointData = d3.range(10).map(() => {
       return {
         x: Math.round(
           Math.random() *
@@ -64,30 +66,9 @@ class CoverageVisualization extends Component {
       };
     });
 
-    const circle = svg
-      .append("circle")
-      .datum(circleDatum)
-      .attr("class", "overlay")
-      .attr("id", "reciever")
-      .attr("cx", function(d) {
-        return d.x;
-      })
-      .attr("cy", function(d) {
-        return d.y;
-      })
-      .attr("r", this.state.accessPointRadius)
-      .style("fill", "rgba(68, 137, 244, 0.4)")
-      .style("cursor", "pointer")
-      .call(
-        drag
-          .on("start", this.dragstarted)
-          .on("drag", this.dragged)
-          .on("end", this.dragended)
-      );
-
-    var points = svg
+    const points = svg
       .selectAll(null)
-      .data(points)
+      .data(pointData)
       .enter()
       .append("circle")
       .attr("class", "point")
@@ -103,12 +84,45 @@ class CoverageVisualization extends Component {
         let y = circleDatum.y - p.y;
         let dis = Math.hypot(x, y);
         return dis <=
-          Math.abs(this.state.accessPointRadius - this.state.recieverRadius)
+          Math.abs(util.accessPointRange() - this.state.recieverRadius)
           ? "green"
           : "red";
       });
 
-    var legend = svg
+    const accessPointRange = svg
+      .append("circle")
+      .attr("class", "overlay")
+      .attr("id", "accessPointRange")
+      .attr("cx", circleDatum.x)
+      .attr("cy", circleDatum.y)
+      .attr("r", util.accessPointRange())
+      .style("fill", "rgba(68, 137, 244, 0.4)");
+
+    const accessPointImage = svg
+      .append("svg:image")
+      .datum(imageDatum)
+      .attr("id", "accessPointImage")
+      .attr(
+        "xlink:href",
+        "https://prd-www-cdn.ubnt.com/media/images/productgroup/unifi-ap-ac-shd/uap-ac-shd-small-2x.png"
+      )
+      .attr("width", util.accessPointSize)
+      .attr("height", util.accessPointSize)
+      .style("cursor", "pointer")
+      .attr("x", function(d) {
+        return d.x;
+      })
+      .attr("y", function(d) {
+        return d.y;
+      })
+      .call(
+        drag
+          .on("start", this.dragstarted)
+          .on("drag", this.dragged)
+          .on("end", this.dragended)
+      );
+
+    const legend = svg
       .append("line")
       .attr("x1", this.state.vizWidth - 10)
       .attr("y1", this.state.vizHeight - 50)
@@ -117,7 +131,7 @@ class CoverageVisualization extends Component {
       .attr("stroke-width", 1)
       .attr("stroke", "grey");
 
-    var legendVertLine1 = svg
+    const legendVertLine1 = svg
       .append("line")
       .attr("x1", this.state.vizWidth - 10)
       .attr("y1", this.state.vizHeight - 50)
@@ -126,7 +140,7 @@ class CoverageVisualization extends Component {
       .attr("stroke-width", 1)
       .attr("stroke", "grey");
 
-    var legendVertLine2 = svg
+    const legendVertLine2 = svg
       .append("line")
       .attr("x1", this.state.vizWidth - 110)
       .attr("y1", this.state.vizHeight - 50)
@@ -135,7 +149,7 @@ class CoverageVisualization extends Component {
       .attr("stroke-width", 1)
       .attr("stroke", "grey");
 
-    var legendText = svg
+    const legendText = svg
       .append("text")
       .attr("x", this.state.vizWidth - 85)
       .attr("y", this.state.vizHeight - 60)
@@ -148,31 +162,42 @@ class CoverageVisualization extends Component {
 
   dragstarted(d) {
     d3
-      .select("#reciever")
+      .select("#accessPointImage")
       .raise()
       .classed("active", true);
   }
 
   dragged(d) {
+    d.x = d3.event.x;
+    d.y = d3.event.y;
+
     d3
-      .select("#reciever")
-      .attr("cx", (d.x = d3.event.x))
-      .attr("cy", (d.y = d3.event.y));
+      .select("#accessPointImage")
+      .attr("x", d.x)
+      .attr("y", d.y);
+
+    d3
+      .select("#accessPointRange")
+      .attr("cx", d.x + util.accessPointSize / 2)
+      .attr("cy", d.y + util.accessPointSize / 2);
 
     d3.selectAll(".point").style("fill", p => {
-      let x = d.x - p.x;
-      let y = d.y - p.y;
+      let cx = d.x + util.accessPointSize / 2;
+      let cy = d.y + util.accessPointSize / 2;
+
+      let x = cx - p.x;
+      let y = cy - p.y;
+
       let dis = Math.hypot(x, y);
-      
       return dis <=
-        Math.abs(this.state.accessPointRadius - this.state.recieverRadius)
+        Math.abs(util.accessPointRange() - this.state.recieverRadius)
         ? "green"
         : "red";
     });
   }
 
   dragended(d) {
-    d3.select("#reciever").classed("active", false);
+    d3.select("#accessPointImage").classed("active", false);
   }
 
   render() {

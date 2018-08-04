@@ -30,16 +30,16 @@ const initialState = {
 function coverageSimulatorApp(state = initialState, action) {
   switch (action.type) {
     case EDIT_CONFIG_UPDATE:
-      console.log("new state tree", { ...state, editConfig: action.config });
+      console.log(action.type, { ...state, editConfig: action.config });
       return { ...state, editConfig: action.config };
     case EDIT_CONFIG_SAVE:
-      console.log("new state tree- post save", {
+      console.log(action.type, {
         ...state,
         currentConfig: action.config
       });
       return { ...state, currentConfig: action.config };
     case EDIT_CONFIG_CLEAR:
-      console.log("new state tree- post cancel", {
+      console.log(action.type, {
         ...state,
         editConfig: action.config
       });
