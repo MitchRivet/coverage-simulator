@@ -14,6 +14,8 @@ const util = {
       4 * Math.PI * distance * util.ghzToHz(radioFreqGhz) / util.speedOfLight,
       2
     ),
+  freeSpacePathLossDB: (distanceKm, radioFreqGhz) =>
+    20 * Math.log10(distanceKm) + 20 * Math.log10(radioFreqGhz) + 92.45,
   accessPointSize: 140,
   accessPointRange: () => util.accessPointSize / 2 + 40
 };
@@ -189,6 +191,11 @@ class CoverageVisualization extends Component {
       let y = cy - p.y;
 
       let dis = Math.hypot(x, y);
+      let distanceKm = dis / 1000;
+
+      //FREE SPACE PATH LOSS
+      //let fsplDb = util.freeSpacePathLossDB(distanceKm, this.props.config.radioFreq.num);
+
       return dis <=
         Math.abs(util.accessPointRange() - this.state.recieverRadius)
         ? "green"
