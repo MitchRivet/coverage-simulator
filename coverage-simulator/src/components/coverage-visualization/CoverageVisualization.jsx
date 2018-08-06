@@ -14,8 +14,8 @@ const util = {
       4 * Math.PI * distance * util.ghzToHz(radioFreqGhz) / util.speedOfLight,
       2
     ),
-  accessPointSize: 80,
-  accessPointRange: () => util.accessPointSize / 2 + 80
+  accessPointSize: 140,
+  accessPointRange: () => util.accessPointSize / 2 + 40
 };
 
 class CoverageVisualization extends Component {
